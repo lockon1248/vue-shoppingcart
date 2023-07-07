@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="./shoppingcar.css">
+
+<body>
+
+    <div id="app">
+        {{text}}
+        <h2>購物車</h2>
+        <ul>
+            <li v-for="(shopItem,index) in shopList" :key="shopItem.num">
+                <img src="https://picsum.photos/300/200/?random=10">
+                <p>{{shopItem.Name}}</p>
+                <div class="quantity">
+                    <button  @click="minus(index)">-</button>
+                    <input type="text" v-model="shopItem.count">
+                    <button @click="add(index)">+</button>
+                </div>
+                <p>{{shopItem.price}}</p>
+                <p>{{shopItem.price*shopItem.count}}</p>
+                <button @click="remove(index)">x</button>
+            </li>
+        </ul>
+        <div class="total">
+            <span>count:{{totalCount}}</span>
+            <span>price</span>
+            <span>total price:${{getTotalPrice}}</span>
+        </div>
+    </div>
+
+
+</body>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                text: '123',
+                shopList: [
+                    {
+                        Name: 'book',
+                        num: '1',
+                        price: 200,
+                        count: 1,
+                    },
+                    {
+                        Name: 'book',
+                        num: '2',
+                        price: 200,
+                        count: 1,
+                    },
+                    {
+                        Name: 'book',
+                        num: '2',
+                        price: 200,
+                        count: 1,
+                    },
+                ],
+
+            }
+        },
+        computed: {
+            totalCount(){
+                return this.shopList.length;
+            },
+            getTotalPrice(){
+                let totalPrice = 0;
+                for (let i = 0; i <=this.shopList.length-1; i++) {
+                    totalPrice += this.shopList[i].price*this.shopList[i].count
+                }
+                return totalPrice;  
+            } 
+        },
+        methods: {
+            add(index){
+                this.shopList[index].count++;
+            },
+            minus(index){
+                this.shopList[index].count--;
+                if (this.shopList[index].count<0) {
+                    this.shopList[index].count=0;
+                }
+            },
+            remove(something){
+               this.shopList.splice(something,1)
+            }
+        },
+    }).mount('#app')
+</script>
+
+</html>
